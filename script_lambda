@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     for loadbalancer in response['LoadBalancers']:
         d=loadbalancer['LoadBalancerArn']
         target=client.describe_target_groups( LoadBalancerArn=str(d))
-        print (target)
-        health=client.describe_target_health(TargetGroupArn=str(target['TargetGroups'][0]['TargetGroupArn']))
         
-        print(health)
+        health=client.describe_target_health(TargetGroupArn=str(target['TargetGroups'][0]['TargetGroupArn']))
+        print(target['TargetGroups'][0]['LoadBalancerArns'])
+        print(health['TargetHealthDescriptions'])
