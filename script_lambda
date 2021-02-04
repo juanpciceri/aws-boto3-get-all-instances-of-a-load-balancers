@@ -4,11 +4,24 @@ import boto3
 def lambda_handler(event, context):
     # TODO implement
     client = boto3.client('elbv2')
+    client1 = boto3.client('elb')
+    response1=client1.describe_load_balancers()
     response = client.describe_load_balancers()
+    target1=client.describe_target_groups()
+    
     for loadbalancer in response['LoadBalancers']:
         d=loadbalancer['LoadBalancerArn']
         target=client.describe_target_groups( LoadBalancerArn=str(d))
-        
-        health=client.describe_target_health(TargetGroupArn=str(target['TargetGroups'][0]['TargetGroupArn']))
-        print(target['TargetGroups'][0]['LoadBalancerArns'])
-        print(health['TargetHealthDescriptions'])
+        count=0
+        for i in target['TargetGroups']:
+            
+            health=client.describe_target_health(TargetGroupArn=str(target['TargetGroups'][count]['TargetGroupArn']))
+            #print(target)
+            #print(target['TargetGroups'][count]['TargetGroupArn'])
+            print(health)
+            print (target['TargetGroups'][count]['TargetGroupArn'])
+            print(health)
+            count=count+1
+    for loadbalancer1 in response1['LoadBalancerDescriptions']:
+        print(loadbalancer1)
+   
